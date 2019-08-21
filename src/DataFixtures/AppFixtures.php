@@ -37,16 +37,27 @@ class AppFixtures extends Fixture
     {
 
             $user = new User();
-            $user->setUserName('Jack.Sparrow');
-            $user->setEmail('allo_jack@lolmail.com');
+            $user->setUserName('Jack.Sparrow.Admin');
+            $user->setEmail('meyson.rlt@gmail.com');
             $user->setLanguage("en");
-            $user->setStatus(0);
+            $user->setStatus(3);
             $user->setPassword($this->encoder->encodePassword(
                 $user,
-                'allo1212'
+                'adminpassword654478'
             ));
 
 
+            $manager->persist($user);
+
+        $user = new User();
+        $user->setUserName('Jack.Sparrow');
+        $user->setEmail('allo_jack@lolmail.com');
+        $user->setLanguage("en");
+        $user->setStatus(1);
+        $user->setPassword($this->encoder->encodePassword(
+            $user,
+            'userpassword654478'
+        ));
             $manager->persist($user);
 
             $this->setReference('Jack Sparrow',$user);
@@ -56,10 +67,10 @@ class AppFixtures extends Fixture
 
     public function load_messages(ObjectManager $manager)
     {
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $message = new Message();
-            $message->setText('Captain Jack Sparrow!!!' . rand(15, 100));
-            $message->setStatus(1);
+            $message->setText('Accumsan in nisl nisi scelerisque eu. Neque laoreet suspendisse interdum consectetur libero. Lorem sed risus ultricies tristique nulla aliquet enim. Id diam maecenas ultricies mi eget mauris. Eget nunc lobortis mattis aliquam faucibus purus in.' . rand(15, 100));
+            $message->setStatus(rand(0,1));
             $message->setUser($this->getReference('Jack Sparrow'));
             $manager->persist($message);
 

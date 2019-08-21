@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'Register'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container">
+        <form method="post">
+            <input type="hidden" name="_csrf_token"
+                                      value="{{ csrf_token('authenticate') }}"
+            >
+            <h1>{{ 'Register'|trans }}</h1>
+            {{ form_widget(registrationForm) }}
+            {#{{ form_start(registrationForm) }}#}
+            {#{{ form_row(registrationForm.user_name) }}#}
+            {#{{ form_row(registrationForm.email) }}#}
+            {#{{ form_row(registrationForm.plainPassword) }}#}
+            {#{{ form_end(registrationForm) }}#}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.user_name) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-    {{ form_end(registrationForm) }}
+        </form>
+    </div>
 {% endblock %}

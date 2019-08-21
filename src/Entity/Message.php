@@ -14,7 +14,7 @@ class Message
        $date = new \DateTime();
        $this->created_at = $date;
        $this->updated_at = $date;
-       $this->image_name = 'no_image';
+       $this->image_name = 'no_image.jpg';
     }
 
     /**
@@ -32,7 +32,7 @@ class Message
     /**
      * @ORM\Column(type="integer")
      */
-    private $status;
+    private $status = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
@@ -136,6 +136,7 @@ class Message
 
         return $this;
     }
+
 
 
 }

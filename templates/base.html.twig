@@ -2,13 +2,100 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ 'Welcome'|trans }}!{% endblock %}</title>
         {% block stylesheets %}
+
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         {% endblock %}
     </head>
     <body>
+        <div class="header">
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ path('message_index') }}">
+                        Guest Book
+                    </a>
+
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+
+                        <ul class="navbar-nav mr-auto">
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <li><a  class="navbar-brand" href="{{path('sonata_admin_dashboard')}}">{{ 'Admin dash'|trans }}</a></li>
+                            {% endif %}
+                            <li><a  class="navbar-brand" href="{{path('message_new')}}">{{ 'Leave message'|trans }}</a></li>
+                        </ul>
+
+
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <div class="dropdown float-right">
+                                <button class="btn btn-sm  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ 'change language'|trans }}
+                                    {% if app.request.getLocale() == 'ua'%}
+                                        <img style="width: 30px; height: 30px" src="{{ asset('images/icons/ukraine.png') }}" alt="">
+                                    {% else %}
+                                        <img style="width: 30px; height: 30px" src="{{ asset('images/icons/united-kingdom.png') }}" alt="">
+                                    {% endif %}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {% if  app.request.attributes.get('_route_params') != null %}
+                                        {% set params = app.request.attributes.get('_route_params')|merge(app.request.attributes.get('_route_params')) %}
+                                        {% set enParams = params|merge({'_locale': 'en'}) %}
+                                        {% set uaParams = params|merge({'_locale': 'ua'}) %}
+
+                                        <a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), enParams) }}"><img style="width: 30px; height: 30px" src="{{ asset('images/icons/united-kingdom.png') }}" alt=""></a>
+
+
+                                        <a class="dropdown-item" href="{{ path(app.request.attributes.get('_route'), uaParams) }}"><img style="width: 30px; height: 30px" src="{{ asset('images/icons/ukraine.png') }}" alt=""></a>
+
+
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+                            <!-- Authentication Links -->
+                            {% if app.user %}
+                            <li class="nav-item ">
+                                <a  class="nav-link" href="{{ path('user_index') }}"  aria-expanded="false" style="position:relative; padding-left:50px;"  >
+                                     {{ app.user.getUsername() }} <span class="caret"></span>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                    <a class="nav-link" role="button" href="{{ path('app_logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ 'Logout'|trans }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ path('app_logout') }}" method="POST" style="display: none;">
+                                    </form>
+
+                            </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_login') }}">{{ 'Login'|trans }}</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('user_register') }}">{{ 'Register'|trans }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        {% endblock %}
     </body>
 </html>

@@ -1,0 +1,13 @@
+{% if object.status %}
+<li>
+    <a class="sonata-action-element" href="{{ admin.generateObjectUrl('verify', object) }}">
+        <i class="fa fa-check-square"></i> {{ 'verify' | trans }}
+    </a>
+</li>
+{% else %}
+    <li>
+        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('verify', object) }}">
+            <i class="fa fa-check-square-o"></i> {{ 'verify' | trans }}
+        </a>
+    </li>
+{% endif %}

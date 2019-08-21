@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppUserAuthenticator;
+use App\Service\Helper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,12 +39,12 @@ class RegistrationController extends AbstractController
             );
             $user->setLanguage('en');
             $user->setStatus(0);
-
+            $user->setBrowserInfo(Helper::getBrowser()['name']);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
+
 
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,

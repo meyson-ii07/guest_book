@@ -1,34 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All Messages{% endblock %}
+{% block title %}{{ 'All Messages'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <table id="messages" class="table table-bordered" style="table-layout: fixed; width:100%">
+<div class="container">
+
+    <div class="col-lg-12 ">
+        <div class="w-100 m-3 mb-3 mr-3">
+            <button  type="button" class="btn btn-primary float-right" onclick="window.location.href = '{{ path('message_new') }}';">{{ 'Leave message'|trans }}</button>
+        </div>
+
+        <table id="messages" class="table table-dark  table-bordered " style="table-layout: fixed; width:100%">
+
             <thead>
             <tr>
-                <th>{{ 'Image' }}</th>
-                <th>{{ 'Author' }}</th>
-                <th>{{ 'Email' }}</th>
-                <th>{{ 'Text' }}</th>
-                <th>{{ 'Created' }}</th>
+                <th>{{ 'Image'|trans }}</th>
+                <th>{{ knp_pagination_sortable(messages,  'Author'|trans , 'm.id') }}</th>
+                <th>{{ 'Email'}}</th>
+                <th>{{ 'Text'|trans }}</th>
+                <th>{{ knp_pagination_sortable(messages,  'Date'|trans , 'm.created_at') }}</th>
             </tr>
             </thead>
             <tbody>
+
             {% for message in messages %}
                 <tr>
-                    <th>
-                        <img src="{{ asset('images/'~ post.getPhotoName() | default('no_image.jpg')) }}" alt="image"
-                             width="200" height="100">
-                    </th>
-                    <th style="word-wrap: break-word">{{ message.User.username}}</th>
-                    <th style="word-wrap: break-word">{{ message.User.email }}</th>
-                    <th style="word-wrap: break-word">{{ message.text  }}</th>
-                    <th>{{ message.getUpdatedAt()|date('Y-m-d H:i:s')  }}</th>
+                    <td scope="col" style="width: 300px;">
+                        <div style="width: 100%; overflow : hidden">
+                            <img style="width: 100%; height: 100%;" src="{{ asset('uploads/'~ message.imageName() | default('no_image.jpg')) }}" alt="image"
+                                 width="200" height="100">
+                        </div>
+                    </td>
+                    <td scope="col" style="word-wrap: break-word">{{ message.User.username}}</td>
+                    <td scope="col" style="word-wrap: break-word">{{ message.User.email }}</td>
+                    <td scope="col" style="word-wrap: break-word">{{ message.text  }}</td>
+                    <td scope="col" >{{ message.getUpdatedAt()|date('Y-m-d H:i:s')  }}</td>
+                    {% if app.user %}
+                        {% if  app.user.getUsername() == message.User.username %}
+                            <td>
+                                <a href="{{ path('message_show',{'id' : message.id})}}">{{ 'Show'|trans }}</a>
+                                <br>
+                                <a class="button" href="{{ path('message_edit',{'id' : message.id})}}">{{ 'edit'|trans }}</a>
+                                <br>
+                                <a href="{{ path('message_delete',{'id' : message.id})}}">{{ 'delete'|trans }}</a>
+                            </td>
+                        {% endif %}
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        <div class="navigation">
+            {{ knp_pagination_render(messages) }}
+        </div>
     </div>
+</div>
+
+
+
 
 {% endblock %}
+

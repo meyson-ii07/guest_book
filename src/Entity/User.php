@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Message;
+use App\Service\Helper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +18,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, \Serializable
 {
+    public function __construct()
+    {
+        $date = new \DateTime();
+        $this->created_at = $date;
+        $this->messages = new ArrayCollection();
+        $this->setAuthKey(Helper::generateRandomString(30));
+    }
+
     /**
      *
      * @ORM\Id()
@@ -53,25 +63,37 @@ class User implements UserInterface, \Serializable
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=5,options={"default" : "en"})
+     * @ORM\Column(type="string", length=5)
      */
-    private $language;
+    private $language = "en";
 
     /**
      *
-     * @ORM\Column(type="integer",options={"default" : 0})
+     * @ORM\Column(type="integer")
      */
-    private $status;
+    private $status = 1;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user")
      */
     private $messages;
 
-    public function __construct()
-    {
-        $this->messages = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $browser_info;
+
+    /**
+     * @ORM\Column(type="string", length=32)
+     */
+    private $auth_key;
+
+
 
     public function getId(): ?int
     {
@@ -148,6 +170,10 @@ class User implements UserInterface, \Serializable
         return $this->messages;
     }
 
+    /**
+     * @param Message $message
+     * @return User
+     */
     public function addMessage(Message $message): self
     {
         if (!$this->messages->contains($message)) {
@@ -187,11 +213,36 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return [
-            'ROLE_USER'
-        ];
-    }
 
+
+       if($this->status == 2)
+        {
+            return [
+                'ROLE_MODERATOR'
+            ];
+        }
+        elseif($this->status == 3)
+        {
+            return [
+                'ROLE_ADMIN'
+            ];
+        }
+        return ['ROLE_USER'];
+    }
+    public function getRolesString()
+    {
+
+        if($this->status == 1)
+            return 'USER';
+        elseif($this->status == 2)
+        {
+            return 'MODERATOR';
+        }
+        elseif($this->status == 3)
+        {
+            return 'ADMIN';
+        }
+    }
     /**
      * Returns the salt that was originally used to encode the password.
      *
@@ -262,5 +313,48 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword($plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getBrowserInfo(): ?string
+    {
+        return $this->browser_info;
+    }
+
+    public function setBrowserInfo(?string $browser_info): self
+    {
+        $this->browser_info = $browser_info;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function __toString()
+    {
+        return $this->user_name;
+    }
+
+    public function getAuthKey(): ?string
+    {
+        return $this->auth_key;
+    }
+
+    public function setAuthKey(string $auth_key): self
+    {
+        $this->auth_key = $auth_key;
+
+        return $this;
     }
 }

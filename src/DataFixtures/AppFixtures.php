@@ -46,6 +46,7 @@ class AppFixtures extends Fixture
                 'adminpassword654478'
             ));
 
+             $this->setReference('Jack Admin',$user);
 
             $manager->persist($user);
 
@@ -75,6 +76,17 @@ class AppFixtures extends Fixture
             $manager->persist($message);
 
         }
+        for ($i = 0; $i < 40; $i++) {
+            $message = new Message();
+            $message->setText('Accumsan in nisl nisi scelerisque eu. Neque laoreet suspendisse interdum consectetur libero. Lorem sed risus ultricies tristique nulla aliquet enim. Id diam maecenas ultricies mi eget mauris. Eget nunc lobortis mattis aliquam faucibus purus in.' . rand(15, 100));
+            $message->setStatus(rand(0,1));
+            $message->setUser($this->getReference('Jack Admin'));
+            $manager->persist($message);
+
+        }
+
         $manager->flush();
+
+
     }
 }

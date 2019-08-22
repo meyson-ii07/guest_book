@@ -10,7 +10,7 @@
             <button  type="button" class="btn btn-primary float-right" onclick="window.location.href = '{{ path('message_new') }}';">{{ 'Leave message'|trans }}</button>
         </div>
 
-        <table id="messages" class="table table-dark  table-bordered " style="table-layout: fixed; width:100%">
+        <table id="messages" bgcolor="#add8e6" class="table table-bordered " style="table-layout: fixed; width:100%">
 
             <thead>
             <tr>
@@ -42,7 +42,7 @@
                                 <br>
                                 <a class="button" href="{{ path('message_edit',{'id' : message.id})}}">{{ 'edit'|trans }}</a>
                                 <br>
-                                <a href="{{ path('message_delete',{'id' : message.id})}}">{{ 'delete'|trans }}</a>
+                                <a href="{{ path('message_delete',{'id' : message.id})}}" >{{ 'delete'|trans }}</a>
                             </td>
                         {% endif %}
                     {% endif %}

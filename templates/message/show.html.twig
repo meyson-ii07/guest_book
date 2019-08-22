@@ -2,7 +2,7 @@
 {% block title %}{{ 'Message'|trans }}{% endblock %}
 {% block body %}
     <div class="container">
-        <h3>Author : {{ app.user.getUsername() }}</h3>
+        <h3>{{ 'Author'|trans }} : {{ app.user.getUsername() }}</h3>
 
                 <div class="col-md-6">
                     <img style="width: 100%" src="{{ asset('uploads/'~ message.imageName() | default('no_image.jpg')) }}" alt="image">
@@ -19,7 +19,7 @@
 
                     <a href="{{ path('message_edit',{'id' : message.id})}}">{{ 'edit'|trans }}</a>
                         <br>
-                    <a href="{{ path('message_delete',{'id' : message.id})}}">{{ 'delete'|trans }}</a>
+                    <a href="{{ path('message_delete',{'id': message.id}) }}" >{{ 'delete'|trans }}</a>
                     {% endif %}
     </div>
 

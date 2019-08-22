@@ -11,7 +11,7 @@
                 {% endif %}
 
                 {% if app.user %}
-                    <div class="checkbox mb-3">{{ 'You are logged in as '|trans }}{{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></div>
+                    <div class="checkbox mb-3">{{ 'You are logged in as'|trans }}{{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></div>
                 {% endif %}
 
                 <h1 class="h3 mb-3 font-weight-normal">{{ 'Please sign in'|trans }}</h1>
@@ -38,7 +38,7 @@
                     </div>
                 #}
                 <br>
-                    <a href="{{ path('security_forgot') }}">forgot password</a>
+                    <a class="text-muted" href="{{ path('security_forgot') }}">forgot password</a>
                 <br>
                 <button class="btn btn-lg btn-primary float-right" type="submit">
                     {{ 'Sign in'|trans }}

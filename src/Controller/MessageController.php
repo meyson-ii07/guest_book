@@ -128,8 +128,11 @@ class MessageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="message_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="message_delete", methods={"GET"})
      * @Security("is_granted('ROLE_USER')")
+     * @param Request $request
+     * @param Message $message
+     * @return Response
      */
     public function delete(Request $request, Message $message): Response
     {
